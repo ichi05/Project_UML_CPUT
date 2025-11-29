@@ -1,17 +1,57 @@
 package fr.efrei.domain;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import fr.efrei.factory.BookingFactory;
+import fr.efrei.factory.ClientFactory;
+import fr.efrei.factory.GuideFactory;
+import fr.efrei.factory.RoadTripFactory;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println("=== Fishing RoadTrip App ===");
+
+        // 1. Création d’un Guide
+        Guide guide = GuideFactory.create(
+                "Jean",
+                "Durand",
+                "Lancer à la mouche",
+                true
+        );
+
+        // 2. Création d’un RoadTrip
+        RoadTrip trip = RoadTripFactory.create(
+                "Île de Ré",
+                guide,
+                "Bar rayé",
+                "Intermédiaire",
+                "2025-07-15"
+        );
+
+        // 3. Création d’un Client
+        Client client = ClientFactory.create(
+                "Marie",
+                "Dupont",
+                "Intermédiaire",
+                "marie.dupont@example.com",
+                true,
+                3
+        );
+
+        // 4. Création d’une réservation (Booking)
+        Booking booking = BookingFactory.create(
+                client,
+                trip,
+                3
+        );
+
+        // 5. Affichage
+        System.out.println("\n=== Résultat ===");
+        System.out.println("Guide : " + guide);
+        System.out.println("RoadTrip : " + trip);
+        System.out.println("Client : " + client);
+        System.out.println("Booking : " + booking);
+
+        System.out.println("\n=== Application terminée ===");
     }
 }
