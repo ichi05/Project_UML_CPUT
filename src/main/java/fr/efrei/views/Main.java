@@ -46,36 +46,36 @@ public class Main {
         roadTripRepo.add(RoadTripFactory.create("Great Barrier Reef", defaultGuide, "Tuna", "Advanced", "10/09/2025"));
 
         System.out.println("===================================");
-        System.out.println("   FISHING AGENCY BOOKING SYSTEM");
+        System.out.println("      FISHING AGENCY SYSTEM");
         System.out.println("===================================");
 
         String inputPin;
         do {
-            System.out.print("\nVeuillez entrer votre code PIN : ");
+            System.out.print("\nPlease enter your PIN code: ");
             inputPin = scanner.nextLine();
 
             if (!inputPin.equals(PIN)) {
-                System.out.println("Code PIN incorrect, veuillez réessayer.");
+                System.out.println("Wrong PIN. Please try again.");
             }
 
         } while (!inputPin.equals(PIN));
 
-        System.out.println("\n✔ Connexion réussie ! Bienvenue.\n");
+        System.out.println("\nLogin successful.\n");
 
         int choice = 0;
 
         while (choice != 3) {
 
             System.out.println("\n==============================");
-            System.out.println("           MENU");
+            System.out.println("             MENU");
             System.out.println("==============================");
-            System.out.println("1 → Faire une réservation");
-            System.out.println("2 → Annuler une réservation");
-            System.out.println("3 → Quitter");
-            System.out.print("Votre choix : ");
+            System.out.println("1 -> Make a reservation");
+            System.out.println("2 -> Cancel a reservation");
+            System.out.println("3 -> Exit");
+            System.out.print("Your choice: ");
 
             if (!scanner.hasNextInt()) {
-                System.out.println("\nAre you kidding me ? Nuh-uh. Idiot. :)");
+                System.out.println("\nAre you kidding me? Nuh-uh. Idiot. :)");
                 break;
             }
 
@@ -84,7 +84,7 @@ public class Main {
 
             if (choice == 1) {
 
-                System.out.println("\nListe des RoadTrips disponibles :\n");
+                System.out.println("\nAvailable RoadTrips:\n");
 
                 List<RoadTrip> trips = roadTripRepo.getAll();
                 for (int i = 0; i < trips.size(); i++) {
@@ -93,31 +93,37 @@ public class Main {
                             + " (" + rt.getDate() + ")");
                 }
 
-                System.out.print("\nVeuillez choisir un RoadTrip (1-" + trips.size() + ") : ");
+                System.out.print("\nSelect a RoadTrip (1-" + trips.size() + "): ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("\nAre you kidding me? Nuh-uh. Idiot. :)");
+                    break;
+                }
+
                 int tripChoice = scanner.nextInt();
                 scanner.nextLine();
 
                 if (tripChoice < 1 || tripChoice > trips.size()) {
-                    System.out.println("Choix invalide.");
+                    System.out.println("Invalid choice.");
                     continue;
                 }
 
                 RoadTrip selected = trips.get(tripChoice - 1);
 
                 if (bookingRepo.findByRoadTrip(selected.getDestinationName()) != null) {
-                    System.out.println("RoadTrip déjà pris !");
+                    System.out.println("This RoadTrip is already booked.");
                 } else {
 
-                    System.out.println("\n✔ Le RoadTrip est disponible !");
-                    System.out.println("Veuillez entrer les informations du client :\n");
+                    System.out.println("\nThis RoadTrip is available.");
+                    System.out.println("Please enter the client information:\n");
 
-                    System.out.print("Prénom : ");
+                    System.out.print("First name: ");
                     String firstName = scanner.nextLine();
 
-                    System.out.print("Nom : ");
+                    System.out.print("Last name: ");
                     String lastName = scanner.nextLine();
 
-                    System.out.print("Email : ");
+                    System.out.print("Email: ");
                     String email = scanner.nextLine();
 
                     Client newClient = ClientFactory.create(
@@ -140,11 +146,11 @@ public class Main {
                     bookingRepo.add(booking);
 
                     System.out.println("\n======================================");
-                    System.out.println("✔ Réservation confirmée !");
-                    System.out.println("Client : " + firstName + " " + lastName);
-                    System.out.println("Email : " + email);
-                    System.out.println("Destination : " + selected.getDestinationName());
-                    System.out.println("Date : " + selected.getDate());
+                    System.out.println("Reservation confirmed.");
+                    System.out.println("Client: " + firstName + " " + lastName);
+                    System.out.println("Email: " + email);
+                    System.out.println("Destination: " + selected.getDestinationName());
+                    System.out.println("Date: " + selected.getDate());
                     System.out.println("======================================");
                 }
 
@@ -153,11 +159,11 @@ public class Main {
                 List<Booking> bookings = bookingRepo.getAll();
 
                 if (bookings.isEmpty()) {
-                    System.out.println("\nAucune réservation existante.");
+                    System.out.println("\nYou have no reservations.");
                     continue;
                 }
 
-                System.out.println("\nRéservations existantes :\n");
+                System.out.println("\nExisting reservations:\n");
 
                 for (int i = 0; i < bookings.size(); i++) {
                     Booking b = bookings.get(i);
@@ -167,32 +173,40 @@ public class Main {
                             b.getClient().getFirstName() + " " + b.getClient().getLastName());
                 }
 
-                System.out.print("\nChoisissez une réservation à annuler (1-" + bookings.size() + ") : ");
+                System.out.print("\nSelect a reservation to cancel (1-" + bookings.size() + "): ");
+
+                if (!scanner.hasNextInt()) {
+                    System.out.println("\nAre you kidding me? Nuh-uh. Idiot. :)");
+                    break;
+                }
+
                 int cancelChoice = scanner.nextInt();
                 scanner.nextLine();
 
                 if (cancelChoice < 1 || cancelChoice > bookings.size()) {
-                    System.out.println("Choix invalide.");
+                    System.out.println("Invalid choice.");
                     continue;
                 }
 
                 Booking toCancel = bookings.get(cancelChoice - 1);
                 bookingRepo.remove(toCancel);
 
-                System.out.println("\nRéservation annulée avec succès pour : " +
+                System.out.println("\nReservation cancelled for: " +
                         toCancel.getRoadtrip().getDestinationName());
 
             } else if (choice == 3) {
 
-                System.out.println("\nProgramme terminé. À bientôt !");
+                System.out.println("\nProgram terminated.");
+                break;
 
             } else {
 
-                System.out.println("\nAre you kidding me ? Nuh-uh. Idiot. :)");
+                System.out.println("\nAre you kidding me? Nuh-uh. Idiot. :)");
                 break;
             }
         }
     }
 }
+
 
 
