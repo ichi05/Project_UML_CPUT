@@ -6,7 +6,17 @@ import java.util.List;
 
 public class GuideRepository {
 
+    private static GuideRepository repository = null;
     private final List<Guide> guides = new ArrayList<>();
+
+    private GuideRepository() {}
+
+    public static GuideRepository getRepository() {
+        if (repository == null) {
+            repository = new GuideRepository();
+        }
+        return repository;
+    }
 
     public void add(Guide guide) {
         guides.add(guide);
@@ -30,4 +40,5 @@ public class GuideRepository {
         guides.remove(guide);
     }
 }
+
 

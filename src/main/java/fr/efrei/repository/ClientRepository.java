@@ -6,7 +6,17 @@ import java.util.List;
 
 public class ClientRepository {
 
+    private static ClientRepository repository = null;
     private final List<Client> clients = new ArrayList<>();
+
+    private ClientRepository() {}
+
+    public static ClientRepository getRepository() {
+        if (repository == null) {
+            repository = new ClientRepository();
+        }
+        return repository;
+    }
 
     public void add(Client client) {
         clients.add(client);
@@ -29,4 +39,5 @@ public class ClientRepository {
         clients.remove(client);
     }
 }
+
 
