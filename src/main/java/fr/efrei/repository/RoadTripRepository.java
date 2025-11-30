@@ -6,7 +6,17 @@ import java.util.List;
 
 public class RoadTripRepository {
 
+    private static RoadTripRepository repository = null;
     private final List<RoadTrip> roadTrips = new ArrayList<>();
+
+    private RoadTripRepository() {}
+
+    public static RoadTripRepository getRepository() {
+        if (repository == null) {
+            repository = new RoadTripRepository();
+        }
+        return repository;
+    }
 
     public void add(RoadTrip roadTrip) {
         roadTrips.add(roadTrip);
@@ -29,4 +39,5 @@ public class RoadTripRepository {
         roadTrips.remove(roadTrip);
     }
 }
+
 
